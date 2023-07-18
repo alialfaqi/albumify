@@ -1,0 +1,87 @@
+<h3 class="my-4 text-center">Registeration Page</h3>
+<div class="container" style="margin-top: 80px">
+  <div class="card mb-3 w-75 m-auto">
+    <div class="row g-0">
+      <div class="col-md-5 d-flex">
+        <img
+          src="https://cdn.dribbble.com/users/1039637/screenshots/5146608/media/c22f76759cf409db77a42664390033a4.gif"
+          class="img-fluid rounded-start"
+          alt="image"
+        />
+      </div>
+      <div class="col-md-7">
+        <div class="card-body my-3">
+          <form [formGroup]="validation">
+            <div class="row mb-3">
+              <div class="col-3">
+                <label class="form-label">Email</label>
+              </div>
+              <div class="col-8">
+                <input
+                  type="text"
+                  formControlName="email"
+                  [ngClass]="
+                    validEmail()
+                      ? 'form-control border border-success border-3'
+                      : validation.controls.email.value
+                      ? 'form-control border border-danger border-3'
+                      : 'form-control'
+                  "
+                />
+              </div>
+              <div class="col-1">
+                <span class="text-danger">*</span>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-3">
+                <label class="form-label">Password</label>
+              </div>
+              <div class="col-8">
+                <input
+                  type="password"
+                  class="form-control"
+                  formControlName="password"
+                  [ngClass]="
+                    validPass()
+                      ? 'form-control border border-success border-3'
+                      : validation.controls.password.value
+                      ? 'form-control border border-danger border-3'
+                      : 'form-control'
+                  "
+                />
+              </div>
+              <div class="col-1">
+                <span class="text-danger">*</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3 m-auto">
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
+                  (click)="signup()"
+                >
+                  Register
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!check">
+  <div
+    class="alert alert-danger d-flex justify-content-between w-35 position-absolute top-0 start-50 translate-middle-x"
+    style="margin-top: 143px"
+    role="alert"
+    *ngIf="!closed"
+  >
+    <span>All fields marked with an asterisk are required!</span>
+
+    <button type="button" class="btn-close" (click)="closed = true"></button>
+  </div>
+</div>

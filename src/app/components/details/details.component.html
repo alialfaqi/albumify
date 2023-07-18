@@ -1,0 +1,48 @@
+<div class="container-fluid">
+  <div
+    class="row bg-secondary text-light align-items-center"
+    *ngIf="user; else falseBlock"
+  >
+    <div class="col text-center">{{ user.name }}</div>
+    <div class="col">
+      <div class="row">
+        <div class="col text-center">{{ user.email }}</div>
+      </div>
+      <div class="row">
+        <div class="col text-center">{{ user.phone }}</div>
+      </div>
+    </div>
+    <div class="col text-center">
+      {{ user.address.street }}, {{ user.address.city }}
+    </div>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let a of albums">
+      <div class="card mb-3">
+        <div class="bg-warning p-5 text-center">Album {{ a.id }}</div>
+        <div class="card-body">
+          <h5 class="card-title">{{ a.title }}</h5>
+          <div class="text-center">
+            <a
+              class="btn btn-outline-primary"
+              routerLink="/users/{{ a.userId }}/album/{{ a.id }}"
+              >View Album</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- loading -->
+<ng-template #falseBlock>
+  <div class="text-center mt-5">
+    <div class="spinner-border text-danger" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</ng-template>

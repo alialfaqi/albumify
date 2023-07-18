@@ -1,0 +1,66 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/users">Logo</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse justify-content-end"
+      id="navbarSupportedContent"
+    >
+      <ul class="navbar-nav align-items-center">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/users"
+            >Home</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/users/1">Albums</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/users/1/album/1">Photos</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            English (En)
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item">Arabic (العربية)</a></li>
+            <li><a class="dropdown-item">French (Fr)</a></li>
+          </ul>
+        </li>
+        <li class="nav-link">
+          <button
+            class="btn btn-outline-info"
+            type="submit"
+            routerLink="signup"
+          >
+            Sign up
+          </button>
+        </li>
+        <li class="nav-link">
+          <button class="btn btn-outline-warning" type="submit" routerLink="">
+            Log in
+          </button>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/">Log out</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

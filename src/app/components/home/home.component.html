@@ -1,0 +1,410 @@
+<div class="my-4">
+  <div class="row w-100 text-center align-items-center">
+    <div class="col">
+      <button
+        class="btn btn-outline-primary fw-bold fs-4"
+        data-bs-toggle="modal"
+        data-bs-target="#addModal"
+        (click)="addUser()"
+      >
+      Add a user
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container table-responsive" *ngIf="users; else falseBlock">
+  <table
+    class="table table-striped table-hover table-bordered mt-3 mb-5 rounded rounded-3 overflow-hidden"
+  >
+    <thead class="text-center table-dark ">
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Number</th>
+        <th>Address</th>
+        <th>Details</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody class="table-light">
+      <tr *ngFor="let u of users" id="{{ u.id }}">
+        <td>{{ u.name }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.phone }}</td>
+        <td>
+          {{ u.address.street ? u.address.street : newUser.street }},
+          {{ u.address.city ? u.address.city : newUser.city }}
+        </td>
+        <td class="text-center">
+          <button
+            class="btn btn-outline-secondary"
+            routerLink="/users/{{ u.id }}"
+          >
+            details
+          </button>
+        </td>
+        <td class="text-center">
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#editModal"
+            (click)="editUser($event)"
+          >
+            edit
+          </button>
+        </td>
+        <td class="text-center">
+          <button
+            class="btn btn-outline-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteModal"
+            (click)="delete($event)"
+          >
+            delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- loading -->
+<ng-template #falseBlock>
+  <div class="text-center mt-5">
+    <div class="spinner-border text-danger" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Add a user form modal -->
+<div
+  class="modal fade"
+  id="addModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">User Information</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="validation">
+          <div class="row mb-3">
+            <div class="col-2">
+              <label class="form-label">Name</label>
+            </div>
+            <div class="col-9">
+              <input
+                type="text"
+                formControlName="name"
+                [ngClass]="
+                  validName()
+                    ? 'form-control border border-success border-3'
+                    : validation.controls.name.value
+                    ? 'form-control border border-danger border-3'
+                    : 'form-control'
+                "
+              />
+            </div>
+            <div class="col-1">
+              <span class="text-danger">*</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <label class="form-label">Email</label>
+            </div>
+            <div class="col-9">
+              <input
+                type="email"
+                class="form-control"
+                formControlName="email"
+                [ngClass]="
+                  validEmail()
+                    ? 'form-control border border-success border-3'
+                    : validation.controls.email.value
+                    ? 'form-control border border-danger border-3'
+                    : 'form-control'
+                "
+              />
+            </div>
+            <div class="col-1">
+              <span class="text-danger">*</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <label class="form-label">Phone</label>
+            </div>
+            <div class="col-9">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="phone"
+                [ngClass]="
+                  validPhone()
+                    ? 'form-control border border-success border-3'
+                    : validation.controls.phone.value
+                    ? 'form-control border border-danger border-3'
+                    : 'form-control'
+                "
+              />
+            </div>
+            <div class="col-1">
+              <span class="text-danger">*</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <label class="form-label">Address</label>
+            </div>
+            <div class="col-5">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="street"
+                placeholder="street"
+                [ngClass]="
+                  validStreet()
+                    ? 'form-control border border-success border-3'
+                    : validation.controls.street.value
+                    ? 'form-control border border-danger border-3'
+                    : 'form-control'
+                "
+              />
+            </div>
+            <div class="col-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="city"
+                placeholder="city"
+                [ngClass]="
+                  validCity()
+                    ? 'form-control border border-success border-3'
+                    : validation.controls.city.value
+                    ? 'form-control border border-danger border-3'
+                    : 'form-control'
+                "
+              />
+            </div>
+            <div class="col-1">
+              <span class="text-danger">*</span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer justify-content-around">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          (click)="confirmAddUser()"
+          #closeBtn
+        >
+          Add
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete a user modal -->
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        Are you sure you sure you want to delete this user?
+      </div>
+      <div class="modal-footer justify-content-around">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          No, go back
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          (click)="confirmDelete()"
+        >
+          yes, delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit a user form modal -->
+<div
+  class="modal fade"
+  id="editModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">User Information</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="validation">
+          <div class="row mb-3">
+            <div class="col-2">
+              <label class="form-label">Name</label>
+            </div>
+            <div class="col-9">
+              <input
+                type="text"
+                formControlName="name"
+                [ngClass]="
+                  validName()
+                    ? 'form-control border border-success border-3'
+                    : validation.controls.name.value
+                    ? 'form-control border border-danger border-3'
+                    : 'form-control'
+                "
+              />
+            </div>
+            <div class="col-1">
+              <span class="text-danger">*</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <label class="form-label">Email</label>
+            </div>
+            <div class="col-9">
+              <input
+                type="email"
+                class="form-control"
+                formControlName="email"
+                [ngClass]="
+                  validEmail()
+                    ? 'form-control border border-success border-3'
+                    : validation.controls.email.value
+                    ? 'form-control border border-danger border-3'
+                    : 'form-control'
+                "
+              />
+            </div>
+            <div class="col-1">
+              <span class="text-danger">*</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <label class="form-label">Phone</label>
+            </div>
+            <div class="col-9">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="phone"
+                [ngClass]="
+                  validPhone()
+                    ? 'form-control border border-success border-3'
+                    : validation.controls.phone.value
+                    ? 'form-control border border-danger border-3'
+                    : 'form-control'
+                "
+              />
+            </div>
+            <div class="col-1">
+              <span class="text-danger">*</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <label class="form-label">Address</label>
+            </div>
+            <div class="col-5">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="street"
+                placeholder="street"
+                [ngClass]="
+                  validStreet()
+                    ? 'form-control border border-success border-3'
+                    : validation.controls.street.value
+                    ? 'form-control border border-danger border-3'
+                    : 'form-control'
+                "
+              />
+            </div>
+            <div class="col-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="city"
+                placeholder="city"
+                [ngClass]="
+                  validCity()
+                    ? 'form-control border border-success border-3'
+                    : validation.controls.city.value
+                    ? 'form-control border border-danger border-3'
+                    : 'form-control'
+                "
+              />
+            </div>
+            <div class="col-1">
+              <span class="text-danger">*</span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer justify-content-around">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          (click)="confirmEdit()"
+        >
+          Edit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!filled">
+  <div
+    class="alert alert-danger d-flex justify-content-between w-35 position-absolute top-0 start-50 translate-middle-x"
+    style="margin-top: 143px"
+    role="alert"
+    *ngIf="!closed"
+  >
+    <span>All fields marked with an asterisk are required!</span>
+
+    <button type="button" class="btn-close" (click)="closed = true"></button>
+  </div>
+</div>
